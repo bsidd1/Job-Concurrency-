@@ -1,0 +1,34 @@
+name: Deploy Next Js App
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    concurrency:
+      group: deploy
+      cancel-in-progress: true
+
+    steps: 
+      - name: Checkout Repository 
+        uses: actions/checkout@v4
+
+      - name: Create Next.js App
+        run: |
+          npx create-next-app@latest my-practice-app --ts --eslint --tailwind --src-dir --app --import-alias "@/*" --use-npm
+
+      - name: Install Dependencies
+        run: |
+          cd my-practice-app
+          npm install
+
+      - name: Build Next.Js App
+        run: |
+          cd my-practice-app
+          npm run build
+
+      - name: Deploy App
+        run: echo "Deploy App ...."
